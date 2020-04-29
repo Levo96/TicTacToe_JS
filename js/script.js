@@ -257,12 +257,14 @@ const handleClick_sp = (element) => {
   if(winner_display.innerHTML == "")
   {
     if(current_player == "X") {
-      let parent = element.parentNode;
+      if(element.innerHTML == ""){
+       let parent = element.parentNode;
       let cell_index = $(element).index();
       element.innerHTML = current_player;
       game_board[cell_index] = current_player;
       check_winner();
-      toggle_turn();
+      toggle_turn(); 
+      }
     }
     if(current_player == "O") {
       let actual_game_board = document.getElementsByClassName("cells");
