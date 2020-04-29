@@ -42,11 +42,11 @@ const player = (...args) => {
     pc_len = possible_cells.length;
 
     rand_number = Math.floor(Math.random() * pc_len);
-
-    module_gameboard_arr[rand_number] = "O";
-    game.update_game_board(module_gameboard_arr);
     possible_cells[rand_number].innerHTML = "O";
-
+    let current_cell = $(board_element).index(possible_cells[rand_number]);
+    console.log(current_cell);
+    module_gameboard_arr[current_cell] = "O";
+    game.update_game_board(module_newgameboard_arr);
   }
   //Tried to use Min Max
   const master_ai = (...args) => {
