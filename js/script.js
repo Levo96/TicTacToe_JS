@@ -2,13 +2,9 @@
 Made by Levan Mebonia
 username: levo96
 project : tic tac toe
-
-(Not going to lie I struggled with the Min Max Algorithm )
-(Min Max Algorithm tutorial :
-  --  Youtube - CodingTrain : Coding Challenge 154 MinMax Algorithm )
 */
 
-
+// HTML Collection {} into array with arrays in it = [[],[],[]]
 const collection_to_3arr = (collection) => {
   let tmp = [];
   let result = [];
@@ -28,6 +24,7 @@ const player = (...args) => {
   let dif_level = "eazy";//default
   let status = "player";
 
+  //EAZY LEVEL
   const eazy_ai = (...args) => {
 
     let board_element = args[0];
@@ -51,7 +48,7 @@ const player = (...args) => {
     possible_cells[rand_number].innerHTML = "O";
 
   }
-
+  //Tried to use Min Max
   const master_ai = (...args) => {
     let board_element = args[0];
     let module_gameboard_arr = game.get_game_board_arr();
@@ -103,7 +100,7 @@ const player = (...args) => {
 
 }
 
-
+//Tried making the Min Max function with online tutorial (might not work perfectly)
 const min_max = (board,depth, isMaximizing) => {
 
 
@@ -151,11 +148,11 @@ const game = (()=> {
     "", "", "",
     "", "", ""
   ];
-
+  //to get the actaul game from outside the game module
   const get_game_board_arr = () => {
     return game_board;
   }
-
+  // to update the game module from outside the game module necessary for the check winner function
   const update_game_board = (arr) => {
     game_board = arr;
     return;
