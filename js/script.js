@@ -279,10 +279,11 @@ const handleClick_sp = (element) => {
       if(playerO.dif_level == "master")
       {
         if(winner_display.innerHTML == ""){
-          //setime out
+        setTimeout(()=> {
           playerO.master_ai(actual_game_board);
           check_winner();
           toggle_turn();
+          },500);
         }
       }
 
