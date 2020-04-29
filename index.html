@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TicTacToe</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="header"><h1 id="title">TicTacToe</h1></div>
+      <div id="page_container">
+        <!------------------->
+        <!--- Start page -->
+        <div id="settings" class="max_hw">
+          <button id="singleplayer_button" class="settings_buttons">singleplayer</button>
+          <button id="multiplayer_button" class="settings_buttons">multiplayer</button>
+        </div>
+        <!--- Singleplayer settings --->
+        <div id="singleplayer_settings_page" class="max_hw">
+          <div id="ssp_item_one" class="ssp_items">
+            <label id="playerX_label" class="game_labels" for="playerX_input">PlayerX: <input id="sp_playerX_input" class="game_inputs" type="text"></label>
+        </div>
+        <div id="ssp_item_spacer"><h2 id="ssp_difficulty_title">Difficulty:</h2></div>
+        <div id="ssp_item_two" class="ssp_items"><button id="dif_eazy_button" class="ssp_difficulty_buttons_selected">eazy</button><button id="dif_master_button"class="ssp_difficulty_buttons">master</button></div>
+        <div  id="ssp_item_three" class="ssp_items">
+          <button class="ssp_buttons next_buttons">next</button>
+          <button class="ssp_buttons cancel_buttons">cancel</button>
+        </div>
+        </div>
+        <!--- Multiplayer settings --->
+        <div id="multiplayer_settings_page" class="max_hw">
+          <div id="msp_item_one" class="msp_items">
+            <label id="playerX_label" class="game_labels" for="playerX_input">PlayerX: <input id="mp_playerX_input" class="game_inputs" type="text"></label>
+            <label id="playerO_label" class="game_labels" for="playerO_input">PlayerO: <input id="playerO_input" class="game_inputs" type="text"></label>
+          </div>
+          <div id="msp_item_two" class="msp_items">
+            <button class="msp_buttons next_buttons">next</button>
+            <button class="msp_buttons cancel_buttons">cancel</button>
+          </div>
+        </div>
+        <!-- Game page -->
+        <div id="game_page" class="max_hw">
+          <div id="gp_center" class="gp_items">
+            <div id="gpc_left" class="gpc_lr">
+              <h2 id="playerX_name" class="player_names"></h2>
+              <h3 id="playerX_marker" class="player_markers"></h3>
+            </div>
+            <div id="gpc_game_board_container" class="gpc_gbc">
+              <div id="game_board">
+              </div>
+            </div>
+            <div id="gpc_right" class="gpc_lr">
+              <h2 id="playerO_name" class="player_names"></h2>
+              <h3 id="playerO_marker" class="player_markers"></h3>
+            </div>
+          </div>
+          <div id="gp_footer" class="gp_items">
+            <div id="gp_footer_item" class="gp_footer_items">
+              <h3 id="gp_fi_result_text" class="gp_fi_result_texts"></h3>
+            </div>
+            <div id="gp_footer_item2" class="gp_footer_items">
+              <button id="reset_button" class="gp_footer_buttons">reset</button>
+              <button id="exit_button" class="gp_footer_buttons">exit</button>
+            </div>
+          </div>
+        </div>
+        <!---------------->
+      </div>
+      </div>
+    </div>
+    <script src="js/script.js" type="text/javascript"></script>
+  </body>
+</html>
