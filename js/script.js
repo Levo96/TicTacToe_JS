@@ -4,25 +4,12 @@ username: levo96
 project : tic tac toe
 */
 
-// HTML Collection {} into array with arrays in it = [[],[],[]]
-const collection_to_3arr = (collection) => {
-  let tmp = [];
-  let result = [];
-  for(let i = 0; i < collection.length; i++) {
-    tmp.push(collection[i]);
-  }
-  for(let i = 0; i < 3; i++) {
-    result.push(tmp.splice(0,3));
-  }
-  return result;
-}
-
 //player constructor
 const player = (...args) => {
   let name = args[0];
   let marker = args[1];
   let dif_level = "eazy";//default
-  let status = "player";
+  let status = "player";//dafult
 
   //EAZY LEVEL
   const eazy_ai = (...args) => {
@@ -44,45 +31,20 @@ const player = (...args) => {
     rand_number = Math.floor(Math.random() * pc_len);
     let curent_cell = $(board_element).index(possible_cells[rand_number]);
     module_gameboard_arr[curent_cell] = "O";
-    console.log(module_gameboard_arr);
     game.update_game_board(module_gameboard_arr)
-    console.log(module_gameboard_arr);
     possible_cells[rand_number].innerHTML = "O";
   }
-  //Tried to use Min Max
-  const master_ai = (...args) => {
-    let board_element = args[0];
-    let module_gameboard_arr = game.get_game_board_arr();
-    let new_board = collection_to_3arr(board_element);
-    let module_newgameboard_arr = [];
-    //------------  min max   ----------------
-    let bestScore = -Infinity;
-    let move;
 
-    for(let i = 0; i < 3; i++) {
-      for(let j = 0; j < 3; j++) {
-        if(new_board[i][j].innerHTML == "") {
-          new_board[i][j].innerHTML = "O";
-          let score = min_max(new_board, 0, true);
-          new_board[i][j].innerHTML = "";
-          if(score > bestScore) {
-            bestScore = score;
-            move = { i, j };
-          }
-        }
-      }
-    }
-    new_board[move.i][move.j].innerHTML = "O";
-    for(let i = 0; i < new_board.length; i++) {
-      for(let j = 0; j < new_board[i].length; j++) {
-        if(new_board[i][j].innerHTML == "") {
-          module_newgameboard_arr.push("");
-        }else{
-          module_newgameboard_arr.push(new_board[i][j].innerHTML);
-        }
-      }
-    }
-    game.update_game_board(module_newgameboard_arr);
+
+// MASTER LEVEL
+const master_ai = (...args) => {
+    let board_element = args[0];
+    let ai_index = aiPlay(); //TO BE HONEST GOT HELP FOR MIN MAX ALGORITHM (CODE AT : 325)
+    let board_arr = game.get_game_board_arr();
+    board_arr[ai_index] = "O";
+    game.update_game_board(board_arr);
+    board_element[ai_index].innerHTML = "O"
+
 
   } //<-- end of master ai
 
@@ -101,40 +63,6 @@ const player = (...args) => {
 
 }
 
-//Tried making the Min Max function with online tutorial (might not work perfectly)
-const min_max = (board,depth, isMaximizing) => {
-
-
-  if(isMaximizing)
-  {
-    let bestScore = -Infinity;
-    for(let i = 0; i < 3; i++) {
-      for(let j = 0; j < 3; j++) {
-        if(board[i][j].innerHTML == ""){
-          board[i][j].innerHTML = "O";
-          let score = min_max(board, depth+1,false);
-          board[i][j].innerHTML = "";
-          bestScore = Math.max(score, bestScore);
-        }
-      }
-    }
-    return bestScore;
-  }else {
-    let bestScore = Infinity;
-    for(let i = 0; i < 3; i++) {
-      for(let j = 0; j < 3; j++) {
-        if(board[i][j].innerHTML == ""){
-          board[i][j].innerHTML = "X";
-          let score = min_max(board, depth+1,true);
-          board[i][j].innerHTML = "";
-          bestScore = Math.min(score, bestScore);
-        }
-      }
-    }
-    return bestScore;
-  }
-}
-
 //the game module
 const game = (()=> {
   //global variables in the game module
@@ -145,9 +73,9 @@ const game = (()=> {
   let parent = document.getElementById("game_board");
   //gameboard
   let game_board = [
-    "", "", "",
-    "", "", "",
-    "", "", ""
+    0,1,2,
+    3,4,5,
+    6,7,8
   ];
   //to get the actaul game from outside the game module
   const get_game_board_arr = () => {
@@ -158,6 +86,12 @@ const game = (()=> {
     game_board = arr;
     return;
   }
+
+  //to get current player from outside the game module neccesary for the ai_play function
+  const get_current_player = () => {
+    return current_player;
+  }
+
   //winning combination of the gameboard the numbers are indexes of the elements in the gameboard
   let winning_combos = [
     [0,1,2],[3,4,5],[6,7,8], //horizontal
@@ -263,7 +197,7 @@ const handleClick_sp = (element) => {
       element.innerHTML = current_player;
       game_board[cell_index] = current_player;
       check_winner();
-      toggle_turn(); 
+      toggle_turn();
       }
     }
     if(current_player == "O") {
@@ -294,8 +228,6 @@ const handleClick_sp = (element) => {
   }
 }
 
-
-
 //handles the click multiplayer
   const handleClick = (element) => {
     if(winner_display.innerHTML == "")
@@ -319,14 +251,13 @@ const handleClick_sp = (element) => {
     }
 
     winner_display.innerHTML = "";
-    game_board = ["", "", "", "", "", "", "", "", ""];
+    game_board = [0,1,2,3,4,5,6,7,8];
 
     if(current_player == "O") {
       current_player = "X";
     }
     render();
   }
-
 
 //Adds event Listeners to every square/cell in the gameboard
   const game_flow = () => {
@@ -335,19 +266,18 @@ const handleClick_sp = (element) => {
       cells[i].addEventListener("click", (e)=> {
         if(winner_display.innerHTML == "") {
           if(playerO.status != "AI") {
-            console.log("Vs Person");
               handleClick(e.target);
               check_winner();
               toggle_turn();
           }
           if(playerO.status == "AI") {
-            console.log("Vs AI")
             handleClick_sp(e.target);
           }
         }
       },{once: true});
     }
   }
+
 //deletes everything and exits the game
   const exit_game = () => {
     $(parent).empty();
@@ -366,7 +296,7 @@ const handleClick_sp = (element) => {
     }
 
     winner_display.innerHTML = "";
-    game_board = ["", "", "", "", "", "", "", "", ""];
+    game_board = [0,1,2,3,4,5,6,7,8];
     if(current_player == "O") {
       current_player = "X";
     }
@@ -380,6 +310,7 @@ const handleClick_sp = (element) => {
     init_playerO,
     get_game_board_arr,
     update_game_board,
+    get_current_player,
     ui_render,
     toggle_turn,
     handleClick_sp,
@@ -390,6 +321,87 @@ const handleClick_sp = (element) => {
     game_flow,
   }
 })();
+
+  //MIN MAX ALGORITHM (TO BE HONEST I GOT HELP FOR THE MIN MAX ALGORITHM ONLINE)
+  function aiPlay() {
+  let board_arr = game.get_game_board_arr();
+  let c_player = game.get_current_player();
+
+  function winning(board, player) {
+    if (
+      (board[0] == player && board[1] == player && board[2] == player) ||
+      (board[3] == player && board[4] == player && board[5] == player) ||
+      (board[6] == player && board[7] == player && board[8] == player) ||
+      (board[0] == player && board[3] == player && board[6] == player) ||
+      (board[1] == player && board[4] == player && board[7] == player) ||
+      (board[2] == player && board[5] == player && board[8] == player) ||
+      (board[0] == player && board[4] == player && board[8] == player) ||
+      (board[2] == player && board[4] == player && board[6] == player)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function emptyCells(board) {
+    return board.filter((cell) => cell !== 'O' && cell !== 'X');
+  }
+
+  let bestPlay = minimax(board_arr, c_player).index;
+
+  function minimax(newBoard, player) {
+    let human = 'X';
+    let ai = 'O';
+
+    let availableSpots = emptyCells(newBoard);
+
+    if (winning(newBoard, human)) {
+      return { score: -10 };
+    } else if (winning(newBoard, ai)) {
+      return { score: 10 };
+    } else if (availableSpots.length === 0) {
+      return { score: 0 };
+    }
+    let moves = [];
+    for (let i = 0; i < availableSpots.length; i++) {
+      let move = {};
+      move.index = newBoard[availableSpots[i]];
+      newBoard[availableSpots[i]] = player;
+
+      if (player === ai) {
+        let result = minimax(newBoard, human);
+        move.score = result.score;
+      } else {
+        let result = minimax(newBoard, ai);
+        move.score = result.score;
+      }
+      newBoard[availableSpots[i]] = move.index;
+      moves.push(move);
+    }
+
+    let bestMove;
+    if (player === ai) {
+      let bestScore = -10000;
+      for (let i = 0; i < moves.length; i++) {
+        if (moves[i].score > bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    } else {
+      let bestScore = 10000;
+      for (let i = 0; i < moves.length; i++) {
+        if (moves[i].score < bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    }
+    return moves[bestMove];
+  }
+  return bestPlay;
+}
 
   //Buttons
   let singleplayer_button = document.getElementById("singleplayer_button");
