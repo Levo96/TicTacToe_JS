@@ -323,11 +323,11 @@ const handleClick_sp = (element) => {
 })();
 
   //MIN MAX ALGORITHM (TO BE HONEST I GOT HELP FOR THE MIN MAX ALGORITHM ONLINE)
-  function aiPlay() {
+  const aiPlay = () => {
   let board_arr = game.get_game_board_arr();
   let c_player = game.get_current_player();
 
-  function winning(board, player) {
+  const winning = (board, player) => {
     if (
       (board[0] == player && board[1] == player && board[2] == player) ||
       (board[3] == player && board[4] == player && board[5] == player) ||
@@ -344,13 +344,11 @@ const handleClick_sp = (element) => {
     }
   }
 
-  function emptyCells(board) {
+  const emptyCells = (board) => {
     return board.filter((cell) => cell !== 'O' && cell !== 'X');
   }
 
-  let bestPlay = minimax(board_arr, c_player).index;
-
-  function minimax(newBoard, player) {
+  const minimax = (newBoard, player) => {
     let human = 'X';
     let ai = 'O';
 
@@ -400,6 +398,7 @@ const handleClick_sp = (element) => {
     }
     return moves[bestMove];
   }
+  let bestPlay = minimax(board_arr, c_player).index;
   return bestPlay;
 }
 
